@@ -34,6 +34,11 @@ func NewRouter(svc ports.MessageService) *gin.Engine {
 func (h *HTTPHandler) postMessage(c *gin.Context) {
 	var req domain.PostMessageRequest
 
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	msg, err := h.svc.Send(req)
 	if err != nil {
 		log.Printf("send message failed: %v", err)
