@@ -5,7 +5,7 @@ import (
 )
 
 type MessageService interface {
-	Send(postMessage domain.PostMessageRequest) (domain.Message, error)
+	Send(postMessage domain.PostMessageRequest) (*domain.Message, error)
 }
 
 type MessagePublisher interface {

@@ -19,6 +19,18 @@ func newHTTPHandler(svc ports.MessageService) *HTTPHandler {
 	}
 }
 
+func NewRouter(svc ports.MessageService) *gin.Engine {
+	h := &HTTPHandler{svc: svc}
+
+	r := gin.New()
+	r.Use(gin.Logger(), gin.Recovery())
+
+	r.GET("/health", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"status": "ok"}) })
+	r.POST("/messages", h.postMessage)
+
+	return r
+}
+
 func (h *HTTPHandler) postMessage(c *gin.Context) {
 	var req domain.PostMessageRequest
 
