@@ -1,11 +1,11 @@
 FROM golang:1.26 AS base
 WORKDIR /app/api
 
-FROM base as deps
+FROM base AS deps
 COPY api/go.mod api/go.sum ./
 RUN go mod download
 
-FROM deps as build
+FROM deps AS build
 COPY api/ ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /ssp-sp-messaging "./cmd"
 
